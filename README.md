@@ -1,23 +1,23 @@
 # Big Hangus Backend
 
-Backend built with Python 3.13, FastAPI, SQLAlchemy, PostgreSQL and uv.
+API em Python 3.13 com FastAPI, SQLAlchemy, PostgreSQL e uv.
 
 ## Setup
 
-Install uv (if not installed):
+Instale o uv:
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Create the environment file and start PostgreSQL:
+Crie o `.env` e suba o PostgreSQL:
 
 ```bash
 cp .env.example .env
 docker compose up -d db
 ```
 
-Install dependencies, apply the migrations and start the server:
+Instale as dependências, aplique as migrations e inicie o servidor:
 
 ```bash
 uv sync
@@ -25,97 +25,42 @@ uv run alembic upgrade head
 uv run uvicorn app.main:app --reload
 ```
 
-The PostgreSQL container is published on host port `5433` by default (set by
-`DB_PORT`), so it does not conflict with a local PostgreSQL on `5432`.
+O container do PostgreSQL usa a porta `5433` no host (definida por `DB_PORT`), evitando conflito com um PostgreSQL local na `5432`.
 
-The API is available at http://localhost:8000 and the docs at
-http://localhost:8000/docs.
+API: http://localhost:8000 — Docs: http://localhost:8000/docs
 
-## Running with Docker
+## Docker
 
 ```bash
 docker compose up --build
 ```
 
-The `migrate` service runs `alembic upgrade head` and the `web` service only
-starts after it completes successfully.
+O serviço `migrate` roda `alembic upgrade head` antes do `web` iniciar.
 
 ## Migrations
 
-The schema is managed by Alembic; `app.main` does not create tables on startup.
-Migrations live in `app/db/migrations/versions` and are committed to the
-repository.
-
-Apply the latest migrations (after pulling changes or deploying):
+O schema é gerenciado pelo Alembic (`app.main` não cria tabelas). As migrations ficam em `app/db/migrations/versions` e são versionadas.
 
 ```bash
+# aplicar
 uv run alembic upgrade head
-```
 
-Create a migration after changing the models:
+# criar após alterar os models
+uv run alembic revision --autogenerate -m "descrição da mudança"
 
-```bash
-uv run alembic revision --autogenerate -m "describe the change"
-```
-
-Review the generated file in `app/db/migrations/versions` before applying it.
-Never edit a migration that has already been applied in a shared environment;
-create a new one instead.
-
-Roll back the last migration:
-
-```bash
+# reverter a última
 uv run alembic downgrade -1
 ```
 
-In production, run `alembic upgrade head` as a deploy step (before starting the
-new version), not in the application entrypoint.
+Revise o arquivo gerado antes de aplicar. Nunca edite uma migration já aplicada em ambiente compartilhado; crie uma nova. Em produção, rode `alembic upgrade head` como etapa de deploy, não no entrypoint da aplicação.
 
-## Tests
+## Testes
 
-Tests use an in-memory SQLite database and apply all Alembic migrations before
-running, so Docker/PostgreSQL is not required:
+Os testes usam SQLite em memória e aplicam todas as migrations, sem precisar de Docker/PostgreSQL:
 
 ```bash
 uv run pytest
 ```
 
-To run the tests against another database, set `TEST_DATABASE_URL` (for example,
-a PostgreSQL test database). Keep in mind that migrations with
-PostgreSQL-specific features must also be validated against PostgreSQL.
+Para usar outro banco, defina `TEST_DATABASE_URL`. Recursos específicos do PostgreSQL devem ser validados também nele.
 
-## Example requests
-
-1. Create a User
-
-```bash
-curl -X POST "http://localhost:8000/api/v1/users" \
-     -H "Content-Type: application/json" \
-     -d '{"name": "Ada Lovelace"}'
-```
-
-2. Get All Users
-
-```bash
-curl -X GET "http://localhost:8000/api/v1/users"
-```
-
-3. Get a User by ID (replace `1` with the actual ID)
-
-```bash
-curl -X GET "http://localhost:8000/api/v1/users/1"
-```
-
-4. Update a User
-
-```bash
-curl -X PUT "http://localhost:8000/api/v1/users/1" \
-     -H "Content-Type: application/json" \
-     -d '{"name": "Grace Hopper"}'
-```
-
-5. Delete a User
-
-```bash
-curl -X DELETE "http://localhost:8000/api/v1/users/1"
-```
