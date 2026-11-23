@@ -269,13 +269,13 @@ erDiagram
 ## 4. Modelo relacional
 
 ```
-INGREDIENTE (id PK, nome UK, preco, data_validade, quantidade_disponivel,
-             unidade_medida, quantidade_minima)
+INGREDIENTES (id PK, nome UK, preco, data_validade, quantidade_disponivel,
+              unidade_medida, quantidade_minima)
 
 PRODUTO (id PK, nome, descricao, preco, categoria, status)
 
 ITEM_RECEITA (produto_id PK/FK -> PRODUTO.id,
-              ingrediente_id PK/FK -> INGREDIENTE.id,
+              ingrediente_id PK/FK -> INGREDIENTES.id,
               quantidade)
 
 USUARIO (id PK, nome, perfil)
@@ -292,7 +292,7 @@ ITEM_PEDIDO (pedido_id PK/FK -> PEDIDO.id,
 
 | Tabela       | Restrição                                                                        |
 |--------------|----------------------------------------------------------------------------------|
-| INGREDIENTE  | `nome` único e não nulo; `preco >= 0`; `quantidade_disponivel >= 0`; `quantidade_minima >= 0`; `unidade_medida IN ('kg', 'litros')` |
+| INGREDIENTES | `nome` único e não nulo; `preco >= 0`; `quantidade_disponivel >= 0`; `quantidade_minima >= 0`; `unidade_medida IN ('kg', 'litros')` |
 | PRODUTO      | `preco >= 0`; `status IN ('ativo', 'inativo')`                                   |
 | ITEM_RECEITA | `quantidade > 0`; exclusão de produto remove sua receita (`ON DELETE CASCADE`)   |
 | ITEM_RECEITA | exclusão de ingrediente é bloqueada se estiver em alguma receita (`ON DELETE RESTRICT`) |
@@ -302,7 +302,7 @@ ITEM_PEDIDO (pedido_id PK/FK -> PEDIDO.id,
 ### 4.2 Script SQL (apenas o necessário para o CRUD implementado)
 
 ```sql
-CREATE TABLE ingrediente (
+CREATE TABLE ingredientes (
     id                    SERIAL PRIMARY KEY,
     nome                  VARCHAR(100)  NOT NULL UNIQUE,
     preco                 NUMERIC(10,2) NOT NULL CHECK (preco >= 0),
