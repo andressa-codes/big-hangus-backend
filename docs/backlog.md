@@ -161,15 +161,15 @@ As atividades descritas na disciplina, organizadas em itens priorizados.
 
 ---
 
-#### Issue #11 — [BE] Configurar acesso ao banco e migração da tabela `ingrediente`
+#### Issue #11 — [BE] Configurar acesso ao banco e migração da tabela `ingredientes`
 **Labels:** `setup`, `backend`, `sprint-1` · **Tamanho:** M · **Item:** PB06
 
-**Descrição:** configurar o acesso ao PostgreSQL (SQLAlchemy) e as migrações (Alembic). Criar a primeira migração com a tabela `ingrediente`, conforme o modelo relacional do `doc-modelos.md`, incluindo as restrições (`nome` único, quantidades e preço não negativos, unidade em `kg` ou `litros`).
+**Descrição:** configurar o acesso ao PostgreSQL (SQLAlchemy) e as migrações (Alembic). Criar a primeira migração com a tabela `ingredientes`, conforme o modelo relacional do `doc-modelos.md`, incluindo as restrições (`nome` único, quantidades e preço não negativos, unidade em `kg` ou `litros`).
 
 **Critérios de aceite:**
 - [ ] Conexão com o banco configurada via variáveis de ambiente
 - [ ] Migração aplicada com sucesso nos containers
-- [ ] Tabela `ingrediente` criada com as colunas e restrições do modelo
+- [ ] Tabela `ingredientes` criada com as colunas e restrições do modelo
 - [ ] Comando para aplicar migrações documentado
 
 ---
@@ -218,7 +218,7 @@ As atividades descritas na disciplina, organizadas em itens priorizados.
 **Descrição:** criar o modelo SQLAlchemy `Ingrediente` e os schemas Pydantic (`IngredienteCreate`, `IngredienteUpdate`, `IngredienteResponse`), aplicando as regras RN01–RN04: nome obrigatório, preço e quantidades não negativas, unidade `kg` ou `litros`.
 
 **Critérios de aceite:**
-- [ ] Modelo mapeado para a tabela `ingrediente`
+- [ ] Modelo mapeado para a tabela `ingredientes`
 - [ ] Validações rejeitam valores negativos e unidade inválida
 - [ ] Resposta inclui o campo calculado `em_baixa` (quantidade disponível menor que a mínima)
 
