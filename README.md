@@ -1,6 +1,23 @@
 # Big Hangus Backend
 
-API em Python 3.13 com FastAPI, SQLAlchemy, PostgreSQL e uv.
+Backend do sistema de estoque da Big Hangus. Disponibiliza uma API REST para o CRUD de ingredientes do estoque, permitindo cadastrar, consultar, listar, alterar e excluir ingredientes, além de identificar itens em baixa.
+
+## Tecnologias
+
+- **Python** — linguagem do projeto
+- **FastAPI** — framework da API REST
+- **Docker** — containerização da aplicação e do banco
+- **PostgreSQL** — banco de dados relacional
+
+## Repositórios relacionados
+
+- Frontend: https://github.com/vanescaSnt/big-hangus-frontend
+
+## Documentação
+
+- [Documento de visão](docs/doc-visao.md)
+- [Documento de modelos](docs/doc-modelos.md)
+- [Backlog](docs/backlog.md)
 
 ## Setup
 
