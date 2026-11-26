@@ -10,6 +10,17 @@ class UnidadeMedida(str, Enum):
     LITROS = "litros"
 
 
+# exemplo exibido na documentação (/docs)
+EXEMPLO_INGREDIENTE = {
+    "nome": "Queijo mussarela",
+    "preco": 42.90,
+    "data_validade": "2026-12-20",
+    "quantidade_disponivel": 8.5,
+    "unidade_medida": "kg",
+    "quantidade_minima": 2,
+}
+
+
 class IngredienteBase(BaseModel):
     nome: str = Field(min_length=1, max_length=100)
     preco: Decimal = Field(ge=0, max_digits=10, decimal_places=2)
@@ -20,15 +31,20 @@ class IngredienteBase(BaseModel):
 
 
 class IngredienteCreate(IngredienteBase):
-    pass
+    model_config = ConfigDict(json_schema_extra={"examples": [EXEMPLO_INGREDIENTE]})
 
 
 class IngredienteUpdate(IngredienteBase):
-    pass
+    model_config = ConfigDict(json_schema_extra={"examples": [EXEMPLO_INGREDIENTE]})
 
 
 class IngredienteResponse(IngredienteBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(
+        from_attributes=True,
+        json_schema_extra={
+            "examples": [{"id": 1, **EXEMPLO_INGREDIENTE, "em_baixa": False}]
+        },
+    )
 
     id: int
 
