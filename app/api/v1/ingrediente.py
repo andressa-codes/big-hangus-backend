@@ -25,7 +25,16 @@ def get_ingrediente_service() -> Iterator[IngredienteService]:
         session.close()
 
 
-@router.get("/ingredientes", response_model=list[IngredienteResponse])
+@router.get(
+    "/ingredientes",
+    response_model=list[IngredienteResponse],
+    summary="Listar ingredientes",
+    description=(
+        "Lista os ingredientes do estoque. Filtros opcionais: `nome` (busca por "
+        "trecho do nome) e `em_baixa=true` (apenas os ingredientes com quantidade "
+        "disponível abaixo da mínima)."
+    ),
+)
 def listar_ingredientes(
     nome: str | None = None,
     em_baixa: bool | None = None,
@@ -38,6 +47,12 @@ def listar_ingredientes(
     "/ingredientes",
     response_model=IngredienteResponse,
     status_code=status.HTTP_201_CREATED,
+    summary="Criar ingrediente",
+    description="Cadastra um ingrediente no estoque. O nome deve ser único.",
+    responses={
+        409: {"description": "Já existe um ingrediente com esse nome"},
+        422: {"description": "Dados inválidos (valor negativo, unidade inválida...)"},
+    },
 )
 def criar_ingrediente(
     ingrediente: IngredienteCreate,
@@ -52,7 +67,13 @@ def criar_ingrediente(
         ) from None
 
 
-@router.get("/ingredientes/{ingrediente_id}", response_model=IngredienteResponse)
+@router.get(
+    "/ingredientes/{ingrediente_id}",
+    response_model=IngredienteResponse,
+    summary="Buscar ingrediente",
+    description="Retorna os dados completos de um ingrediente pelo identificador.",
+    responses={404: {"description": "Ingrediente não encontrado"}},
+)
 def buscar_ingrediente(
     ingrediente_id: int,
     service: IngredienteService = Depends(get_ingrediente_service),
@@ -66,7 +87,17 @@ def buscar_ingrediente(
     return ingrediente
 
 
-@router.put("/ingredientes/{ingrediente_id}", response_model=IngredienteResponse)
+@router.put(
+    "/ingredientes/{ingrediente_id}",
+    response_model=IngredienteResponse,
+    summary="Atualizar ingrediente",
+    description="Altera os dados de um ingrediente. O nome deve continuar único.",
+    responses={
+        404: {"description": "Ingrediente não encontrado"},
+        409: {"description": "Já existe outro ingrediente com esse nome"},
+        422: {"description": "Dados inválidos (valor negativo, unidade inválida...)"},
+    },
+)
 def atualizar_ingrediente(
     ingrediente_id: int,
     ingrediente: IngredienteUpdate,
@@ -89,6 +120,9 @@ def atualizar_ingrediente(
 @router.delete(
     "/ingredientes/{ingrediente_id}",
     status_code=status.HTTP_204_NO_CONTENT,
+    summary="Excluir ingrediente",
+    description="Remove um ingrediente do estoque. Não retorna conteúdo.",
+    responses={404: {"description": "Ingrediente não encontrado"}},
 )
 def excluir_ingrediente(
     ingrediente_id: int,
