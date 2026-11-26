@@ -317,11 +317,11 @@ CREATE TABLE ingredientes (
 
 | Operação  | Método   | Rota                    | Corpo         | Resposta de sucesso            | Erros                        |
 |-----------|----------|-------------------------|---------------|--------------------------------|------------------------------|
-| Incluir   | `POST`   | `/ingredientes`         | Ingrediente   | `201 Created` + ingrediente    | `409` nome duplicado, `422` dado inválido |
-| Listar    | `GET`    | `/ingredientes`         | —             | `200 OK` + lista (filtro `nome`, `em_baixa`) | —              |
-| Consultar | `GET`    | `/ingredientes/{id}`    | —             | `200 OK` + ingrediente         | `404` não encontrado         |
-| Alterar   | `PUT`    | `/ingredientes/{id}`    | Ingrediente   | `200 OK` + ingrediente         | `404`, `409`, `422`          |
-| Excluir   | `DELETE` | `/ingredientes/{id}`    | —             | `204 No Content`               | `404`, `409` se em uso       |
+| Incluir   | `POST`   | `/api/v1/ingredientes`         | Ingrediente   | `201 Created` + ingrediente    | `409` nome duplicado, `422` dado inválido |
+| Listar    | `GET`    | `/api/v1/ingredientes`         | —             | `200 OK` + lista (filtro `nome`, `em_baixa`) | —              |
+| Consultar | `GET`    | `/api/v1/ingredientes/{id}`    | —             | `200 OK` + ingrediente         | `404` não encontrado         |
+| Alterar   | `PUT`    | `/api/v1/ingredientes/{id}`    | Ingrediente   | `200 OK` + ingrediente         | `404`, `409`, `422`          |
+| Excluir   | `DELETE` | `/api/v1/ingredientes/{id}`    | —             | `204 No Content`               | `404`, `409` se em uso       |
 
 **Exemplo de corpo (JSON):**
 
@@ -346,7 +346,7 @@ sequenceDiagram
     participant DB as PostgreSQL
 
     G->>FE: Preenche o formulário e salva
-    FE->>API: POST /ingredientes
+    FE->>API: POST /api/v1/ingredientes
     API->>API: Valida dados (RN01–RN04)
     alt dados inválidos
         API-->>FE: 422 Unprocessable Entity
