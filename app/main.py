@@ -8,7 +8,11 @@ from fastapi.middleware.cors import CORSMiddleware
 
 setup_logging()
 
-app = FastAPI(title=config.app_name)
+app = FastAPI(
+    title="Big Hangus Estoque",
+    description="API do controle de estoque da Big Hangus. CRUD de ingredientes.",
+    version="1.0.0",
+)
 
 
 # Register routes
